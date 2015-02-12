@@ -4,7 +4,7 @@ import math
 argvs = sys.argv
 argc = len(argvs) # length will return the number of arguments
 #including the python file.
-# store information from arguments "python plane_agent.py weather.txt euclidean 7"
+#store information from arguments "python plane_agent.py weather.txt euclidean 7"
 weatherInfo = argvs[1]
 heuristic = argvs[2]
 fuel = argvs[3]
@@ -17,13 +17,13 @@ def buildMap(weatherInfo):
     :param weatherInfo:
     """
     f = open(weatherInfo)
-    line = f.readline()
+    line = f.readline()#include a new line char
     weatherMap = []
     while line:
         temp = []
         print "line = " + line
         print "len(line) = " + str(len(line))
-        for i in range(0,len(line)-1):
+        for i in range(0, len(line) -1):
             temp.append(line[i])
         weatherMap.append(temp)
         #print "len =" , len(weatherMap) can obtain num of w
@@ -38,6 +38,10 @@ def drawMap(map):
     draw a map info
     :param map:
     """
+    print "Draw Current Map"
+    for i in range(0,len(map)):
+        for j in range(0, len(map[i])):
+            print map[i][j]
 
     print map
 def euclidean(i1,j1,i2,j2):
@@ -52,6 +56,7 @@ def euclidean(i1,j1,i2,j2):
     """
     euclideanDist = math.sqrt((i1-i2)^2 + (j1-j2)^2)
     return euclideanDist
+
 def manhattan(i1,j1,i2,j2):
     manhattanDis = abs(i1+i2) + abs(j1+j2)
     return manhattanDis
@@ -61,40 +66,69 @@ def fuelDistance():
 def getUsedDistance(fuel):
     pass
 def findAirPlane(map):
+    """
+    Find a starting point and return its location
+    :param map:
+    :return location: location contains (x,y,fuel needed to go to the next box)
+    """
     row = len(map)
+    print row-1
     for i in range(0,row):
-        column = len(map[row])
-        for j in range(column):
+        print i
+        print map[row]
+        column = len(map[row])-1
+        for j in range(0, column):
             if map[row][column] == 'A':
                 Neededfuel = 1
                 location = (row, column, Neededfuel)
+                return location
             elif map[row][column] == 'B':
                 Neededfuel = 2
                 location = (row, column, Neededfuel)
+                return location
             elif map[row][column] == 'C':
                 Neededfuel = 3
                 location = (row, column,Neededfuel)
+                return location
             elif map[row][column] == 'D':
                 Neededfuel = 4
                 location = (row, column,Neededfuel)
+                return location
             elif map[row][column] == 'E':
                 Neededfuel = 5
                 location = (row, column,Neededfuel)
+                return location
             elif map[row][column] == 'F':
                 Neededfuel = 6
                 location = (row, column,Neededfuel)
+                return location
             elif map[row][column] == 'G':
                 Neededfuel = 7
                 location = (row, column,Neededfuel)
+                return location
             elif map[row][column] == 'H':
                 Neededfuel = 8
                 location = (row, column,Neededfuel)
+                return location
             elif map[row][column] == 'I':
                 Neededfuel = 9
                 location = (row, column,Neededfuel)
+                return location
             else:
                 print "Can not find an airplane!"
-    return location
+            #return location
+def findGoal(map):
+    row = len(map)
+    for i in range(0,row):
+        for j in range(0,map[row]):
+            if map[i][j] == 'P':
+                goalLoc = (i,j)
+                return goalLoc
+def A_starSearch():
+    pass
+
+
+
 
 
 
@@ -107,9 +141,12 @@ print "heuristic = " + heuristic
 print "fuel = " + fuel
 print "weatherInfo = " + weatherInfo
 map = buildMap(weatherInfo)
-print "Lenmap", len(map)
-print "Len map[row = 0]", len(map[0])
-print findAirPlane(map)
+print map[0]
+print map[1]
+print "Len map", len(map)
+print "Len map[row = 0]", len(map[1])
+#location = findAirPlane(map)
+
 ''''
 str = "2"
 print str.isdigit()
