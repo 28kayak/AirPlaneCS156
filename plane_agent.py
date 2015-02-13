@@ -39,9 +39,12 @@ def drawMap(map):
     :param map:
     """
     print "Draw Current Map"
+    rowInfo = ''
     for i in range(0,len(map)):
         for j in range(0, len(map[i])):
-            print map[i][j]
+
+            sys.stdout.write(map[i][j])
+        print ""
 
     print map
 def euclidean(i1,j1,i2,j2):
@@ -72,7 +75,7 @@ def findAirPlane(map):
     :return location: location contains (x,y,fuel needed to go to the next box)
     """
     row = len(map)
-    print row-1
+    print row
     for i in range(0,row):
         print i
         print map[row]
@@ -124,6 +127,16 @@ def findGoal(map):
             if map[i][j] == 'P':
                 goalLoc = (i,j)
                 return goalLoc
+
+def getCurrentLocation():
+    pass
+
+def goUp(currentLocation):
+    pass
+
+
+
+
 def A_starSearch():
     pass
 
@@ -140,9 +153,14 @@ def A_starSearch():
 print "heuristic = " + heuristic
 print "fuel = " + fuel
 print "weatherInfo = " + weatherInfo
-map = buildMap(weatherInfo)
-print map[0]
-print map[1]
+weather = buildMap(weatherInfo)
+row = 0
+print "map[row]\n" ,weather[row]
+print weather[1]
+
+drawMap(weather)
+
+
 print "Len map", len(map)
 print "Len map[row = 0]", len(map[1])
 #location = findAirPlane(map)
