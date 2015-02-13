@@ -79,41 +79,41 @@ def findAirPlane(map):
     for i in range(0,row):
         print i
         print map[row]
-        column = len(map[row])-1
+        column = len(map[i])
         for j in range(0, column):
-            if map[row][column] == 'A':
+            if map[i][j] == 'A':
                 Neededfuel = 1
                 location = (row, column, Neededfuel)
                 return location
-            elif map[row][column] == 'B':
+            elif map[i][j] == 'B':
                 Neededfuel = 2
                 location = (row, column, Neededfuel)
                 return location
-            elif map[row][column] == 'C':
+            elif map[i][j] == 'C':
                 Neededfuel = 3
                 location = (row, column,Neededfuel)
                 return location
-            elif map[row][column] == 'D':
+            elif map[i][j] == 'D':
                 Neededfuel = 4
                 location = (row, column,Neededfuel)
                 return location
-            elif map[row][column] == 'E':
+            elif map[i][j] == 'E':
                 Neededfuel = 5
                 location = (row, column,Neededfuel)
                 return location
-            elif map[row][column] == 'F':
+            elif map[i][j] == 'F':
                 Neededfuel = 6
                 location = (row, column,Neededfuel)
                 return location
-            elif map[row][column] == 'G':
+            elif map[i][j] == 'G':
                 Neededfuel = 7
                 location = (row, column,Neededfuel)
                 return location
-            elif map[row][column] == 'H':
+            elif map[i][j] == 'H':
                 Neededfuel = 8
                 location = (row, column,Neededfuel)
                 return location
-            elif map[row][column] == 'I':
+            elif map[i][j] == 'I':
                 Neededfuel = 9
                 location = (row, column,Neededfuel)
                 return location
@@ -123,9 +123,10 @@ def findAirPlane(map):
 def findGoal(map):
     row = len(map)
     for i in range(0,row):
-        for j in range(0,map[row]):
+        for j in range(0,len(map[i])):
             if map[i][j] == 'P':
                 goalLoc = (i,j)
+                print goalLoc
                 return goalLoc
 
 def getCurrentLocation():
@@ -159,6 +160,7 @@ print "map[row]\n" ,weather[row]
 print weather[1]
 
 drawMap(weather)
+goal = findGoal(weather)
 
 
 print "Len map", len(map)
