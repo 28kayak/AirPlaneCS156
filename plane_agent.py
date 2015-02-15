@@ -46,7 +46,7 @@ def drawMap(map):
         print ""
 
     print map
-def euclidean(i1,j1,i2,j2):
+def euclidean(mapm,i1,j1,i2,j2):
     """
     if point1 = (i1,j1) and point2 = (i2,j2) are given,
     then the euclidean(i.e. straight line) distance is obtained by:
@@ -56,17 +56,16 @@ def euclidean(i1,j1,i2,j2):
     :param i2:horizontal value for point2
     :param j2:vertical value for point2
     """
-    euclideanDist = math.sqrt((i1-i2)^2 + (j1-j2)^2)
+    euclideanDist = math.sqrt((i1-i2)**2 + (j1-j2)**2)
     return euclideanDist
 
-def manhattan(i1,j1,i2,j2):
+def manhattan(mapm,i1,j1,i2,j2):
     manhattanDis = abs(i1-i2) + abs(j1-j2)
     return manhattanDis
-def fuelDistance():
+
+
+def getUsedDistance(fuel):
     pass
-
-
-
 def findAirPlane(mapm):
     """
     Find a starting point and return its location
@@ -127,9 +126,15 @@ def findGoal(mapm):
                 goalLoc = (i,j)
                 return goalLoc
 
+def made_up(mapm,i1,j1,i2,j2):
+    if mapm[i1][j1] == 'P':
+        return euclidean(mapm,i1,j1,i2,j2) + 0
+    else:
+        return euclidean(mapm,i1,j1,i2,j2) + int(mapm[i1][j1])
 
 
-def getNext(mapm,dist,cI,cJ,gI,gJ, sI, sJ):
+
+def getNext(dist,mapm,cI,cJ,goalI,goalJ,startI,startJ):
 
     minv=10000
     upI=cI-1
@@ -140,24 +145,11 @@ def getNext(mapm,dist,cI,cJ,gI,gJ, sI, sJ):
     rightJ=cJ+1
     leftI=cI
     leftJ=cJ-1
-
-    # measure h(n) = distance between next location and goal, plus c(n) = distance between starting point and goal.
-    #Form here, start A*search such that A*search = h(n) + c(n)
-    upD=dist(upI,upJ,goalI,goalJ) + dist(sI, sJ, gI, gJ)
-    downD=dist(downI,downJ,goalI,goalJ) + dist(sI, sJ, gI, gJ)
-    rightD=dist(rightI,rightJ,goalI,goalJ) + dist(sI, sJ, gI, gJ)
-    leftD=dist(leftI,leftJ,goalI,goalJ) + dist(sI, sJ, gI, gJ)
-
-    fuelUpD = mapm[upI][upJ]
-    fuelDownD = mapm[downI][downJ]
-    fuelRightD = mapm[rightI][rightJ]
-    fuelLeftD = mapm[leftI][leftJ]
-    upD += int(fuelUpD)
-    downD += int(fuelDownD)
-    rightD += int(fuelRightD)
-    leftD += int(fuelLeftD)
-
-
+    #dist=manhattan
+    upD=dist(mapm,upI,upJ,goalI,goalJ) # + dist(upI, upJ, startI, startJ)
+    downD=dist(mapm,downI,downJ,goalI,goalJ)#+ dist(downI, downJ, startI, startJ)
+    rightD=dist(mapm,rightI,rightJ,goalI,goalJ)#+ dist(rightI, rightJ, startI, startJ)
+    leftD=dist(mapm,leftI,leftJ,goalI,goalJ)# + dist(leftI, leftJ, startI, startJ)
 
     if (upD < minv):
         minv=upD
@@ -176,8 +168,11 @@ def getNext(mapm,dist,cI,cJ,gI,gJ, sI, sJ):
         minv=leftD
         nextI=leftI
         nextJ=leftJ
+
     print "NEXT", nextI,nextJ
     return (nextI,nextJ,minv)
+
+
 
 def changemap(mapm,ci,cj,ni,nj):
     if (mapm[ni][nj]=='1'):
@@ -229,11 +224,30 @@ def moveLoc(mapm,cI,cJ,nextI,nextJ):
     cJ=nextJ
     return (cI,cJ)
 
-def isGoal(location):
-    if location == 'P':
-        return True
+
+def convertAtoI(a):
+    if a == 'A':
+        return 1
+    elif a == 'B':
+        return 2
+    elif a == 'C':
+        return 3
+    elif a == 'D':
+        return 4
+    elif a == 'E':
+        return 5
+    elif a == 'F':
+        return 6
+    elif a == 'G':
+        return 7
+    elif a  == 'H':
+        return 8
+    elif a  == 'I':
+        return 9
     else:
-        return False
+        print "Error"
+        return 0
+
 
 
 print "heuristic = " + heuristic
@@ -242,82 +256,54 @@ print "weatherInfo = " + weatherInfo
 weather = buildMap(weatherInfo)
 row = 0
 print "map[row]\n" ,weather[row]
-print weather[1]
+
 
 drawMap(weather)
+print "MAP: ",weather
+
 goal = findGoal(weather)
-print goal
+print "GOAL: ",goal
 goalI=goal[0]
 goalJ=goal[1]
 
-print weather
-print "Len map", len(weather)
-print "Len map[row = 0]", len(weather[1])
-#location = findAirPlane(map)
 startLoc=findAirPlane(weather)
-print startLoc
+print "START: ",startLoc
 
 counter=0
 currentLoc=startLoc
-#caliculate Up,Down,RIght,Left
+
+startI=startLoc[0]
+startJ=startLoc[1]
 cI=startLoc[0]
 cJ=startLoc[1]
 
-global sI
-sI =startLoc[0]
-global sJ
-sJ = startLoc[1]
-print "START", cI,cJ
 
-
-(nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
-(cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
-counter=counter+1
-print "MAP ",counter, weather
-
-
-(nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
-(cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
-counter=counter+1
-print "MAP ",counter, weather
-
-(nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
-(cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
-counter=counter+1
-print "MAP ",counter, weather
-
-(nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
-(cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
-counter=counter+1
-print "MAP ",counter, weather
-
-(nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
-(cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
-counter=counter+1
-print "MAP ",counter, weather
-
-while fuel >= 0 and isGoal(currentLoc) != True:
-    (nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
-    (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
-    counter=counter+1
-    print "MAP ",counter, drawMap(weather)
-
-
-
-
-
-
-
-
-
-
-
-''''
-print startLoc
-str = "2"
-print str.isdigit()
-str1 = 'A'
-print str1.isdigit()
-c(n) = distance between starting point and
-'''
+while (weather[cI][cJ]!="J" and int(fuel) > 0):
+    if heuristic == 'manhattan':
+        (nextI,nextJ,fuelneeded)=getNext(manhattan, weather, cI,cJ,goalI,goalJ,startI,startJ)
+        print weather
+        print "Fule needed to go out",weather[cI][cJ]
+        fuel = int(fuel) - int(convertAtoI(weather[cI][cJ]))
+        print "FUEL:" , fuel
+        (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
+        counter=counter+1
+        print "MAP ",counter, weather, fuel
+    if heuristic == "euclidean":
+        (nextI,nextJ,fuelneeded)=getNext(euclidean, weather, cI,cJ,goalI,goalJ,startI,startJ)
+        print weather
+        print "Fule needed to go out",weather[cI][cJ]
+        fuel = int(fuel) - int(convertAtoI(weather[cI][cJ]))
+        print "FUEL:" , fuel
+        (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
+        counter=counter+1
+        print "MAP ",counter, weather, fuel
+    if heuristic == "made_up":
+        (nextI,nextJ,fuelneeded)=getNext(made_up, weather, cI,cJ,goalI,goalJ,startI,startJ)
+        print weather
+        print "Fule needed to go out",weather[cI][cJ]
+        fuel = int(fuel) - int(convertAtoI(weather[cI][cJ]))
+        print "FUEL:" , fuel
+        (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
+        counter=counter+1
+        print "MAP ",counter, weather, fuel
 print "end"
