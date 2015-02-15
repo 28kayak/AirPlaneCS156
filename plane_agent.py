@@ -13,7 +13,6 @@ fuel = argvs[3]
 def buildMap(weatherInfo):
     """
     read input file and build a corresponding map
-
     :param weatherInfo:
     """
     f = open(weatherInfo)
@@ -61,94 +60,171 @@ def euclidean(i1,j1,i2,j2):
     return euclideanDist
 
 def manhattan(i1,j1,i2,j2):
-    manhattanDis = abs(i1+i2) + abs(j1+j2)
+    manhattanDis = abs(i1-i2) + abs(j1-j2)
     return manhattanDis
 def fuelDistance():
     pass
 
 def getUsedDistance(fuel):
     pass
-def findAirPlane(map):
+def findAirPlane(mapm):
     """
     Find a starting point and return its location
-    :param map:
+    :param mapm:
     :return location: location contains (x,y,fuel needed to go to the next box)
     """
-    row = len(map)
-    print row
+    row = len(mapm)
+
     for i in range(0,row):
-        print i
-        print map[row]
-        column = len(map[i])
+
+        print mapm[i]
+        column = len(mapm[i])
         for j in range(0, column):
-            if map[i][j] == 'A':
+            if mapm[i][j] == 'A':
                 Neededfuel = 1
-                location = (row, column, Neededfuel)
+                location = (i, j, Neededfuel)
                 return location
-            elif map[i][j] == 'B':
+            elif mapm[i][j] == 'B':
                 Neededfuel = 2
-                location = (row, column, Neededfuel)
+                location = (i, j, Neededfuel)
                 return location
-            elif map[i][j] == 'C':
+            elif mapm[i][j] == 'C':
                 Neededfuel = 3
-                location = (row, column,Neededfuel)
+                location = (i, j,Neededfuel)
                 return location
-            elif map[i][j] == 'D':
+            elif mapm[i][j] == 'D':
                 Neededfuel = 4
-                location = (row, column,Neededfuel)
+                location = (i, j,Neededfuel)
                 return location
-            elif map[i][j] == 'E':
+            elif mapm[i][j] == 'E':
                 Neededfuel = 5
-                location = (row, column,Neededfuel)
+                location = (i, j,Neededfuel)
                 return location
-            elif map[i][j] == 'F':
+            elif mapm[i][j] == 'F':
                 Neededfuel = 6
-                location = (row, column,Neededfuel)
+                location = (i, j,Neededfuel)
                 return location
-            elif map[i][j] == 'G':
+            elif mapm[i][j] == 'G':
                 Neededfuel = 7
-                location = (row, column,Neededfuel)
+                location = (i, j,Neededfuel)
                 return location
-            elif map[i][j] == 'H':
+            elif mapm[i][j] == 'H':
                 Neededfuel = 8
-                location = (row, column,Neededfuel)
+                location = (i, j,Neededfuel)
                 return location
-            elif map[i][j] == 'I':
+            elif mapm[i][j] == 'I':
                 Neededfuel = 9
-                location = (row, column,Neededfuel)
+                location = (i, j,Neededfuel)
                 return location
             else:
                 print "Can not find an airplane!"
             #return location
-def findGoal(map):
-    row = len(map)
+def findGoal(mapm):
+    row = len(mapm)
     for i in range(0,row):
-        for j in range(0,len(map[i])):
-            if map[i][j] == 'P':
+        for j in range(0,len(mapm[i])):
+            if mapm[i][j] == 'P':
                 goalLoc = (i,j)
-                print goalLoc
                 return goalLoc
 
-def getCurrentLocation():
-    pass
-
-def goUp(currentLocation):
-    pass
 
 
+def getNext(dist,cI,cJ,gI,gJ):
+
+    minv=10000
+    upI=cI-1
+    upJ=cJ
+    downI=cI+1
+    downJ=cJ
+    rightI=cI
+    rightJ=cJ+1
+    leftI=cI
+    leftJ=cJ-1
+    dist=manhattan#later changed
+    # measure distance between goal
+    upD=dist(upI,upJ,goalI,goalJ) + dist()
+    downD=dist(downI,downJ,goalI,goalJ)+dist(upI)
+    rightD=dist(rightI,rightJ,goalI,goalJ)
+    leftD=dist(leftI,leftJ,goalI,goalJ)
 
 
-def A_starSearch():
-    pass
+    if (upD < minv):
+        minv=upD
+        nextI=upI
+        nextJ=upJ
+
+    if (downD<minv):
+        minv=downD
+        nextI=downI
+        nextJ=downJ
+    if (rightD<minv):
+        minv=rightD
+        nextI=rightI
+        nextJ=rightJ
+    if (leftD<minv):
+        minv=leftD
+        nextI=leftI
+        nextJ=leftJ
+    print "NEXT", nextI,nextJ
+    return (nextI,nextJ,minv)
+
+
+
+def changemap(mapm,ci,cj,ni,nj):
+    if (mapm[ni][nj]=='1'):
+        mapm[ni][nj]='A'
+    if (mapm[ni][nj]=='2'):
+        mapm[ni][nj]='B'
+    if (mapm[ni][nj]=='3'):
+        mapm[ni][nj]='C'
+    if (mapm[ni][nj]=='4'):
+        mapm[ni][nj]='D'
+    if (mapm[ni][nj]=='5'):
+        mapm[ni][nj]='E'
+    if (mapm[ni][nj]=='6'):
+        mapm[ni][nj]='F'
+    if (mapm[ni][nj]=='7'):
+        mapm[ni][nj]='G'
+    if (mapm[ni][nj]=='8'):
+        mapm[ni][nj]='H'
+    if (mapm[ni][nj]=='9'):
+        mapm[ni][nj]='I'
+    if (mapm[ni][nj]=='P'):
+        mapm[ni][nj]='J'
+
+    if (mapm[ci][cj]=='A'):
+        mapm[ci][cj]='1'
+    if (mapm[ci][cj]=='B'):
+        mapm[ci][cj]='2'
+    if (mapm[ci][cj]=='C'):
+        mapm[ci][cj]='3'
+    if (mapm[ci][cj]=='D'):
+        mapm[ci][cj]='4'
+    if (mapm[ci][cj]=='E'):
+        mapm[ci][cj]='5'
+    if (mapm[ci][cj]=='F'):
+        mapm[ci][cj]='6'
+    if (mapm[ci][cj]=='G'):
+        mapm[ci][cj]='7'
+    if (mapm[ci][cj]=='H'):
+        mapm[ci][cj]='8'
+    if (mapm[ci][cj]=='I'):
+        mapm[ci][cj]='9'
 
 
 
 
+def moveLoc(mapm,cI,cJ,nextI,nextJ):
+    changemap(mapm,cI,cJ,nextI,nextJ)
+    cI=nextI
+    cJ=nextJ
+    return (cI,cJ)
 
-
-
-
-
+def isGoal(location):
+    if location == 'P':
+        return True
+    else
+        return False
 
 
 print "heuristic = " + heuristic
@@ -161,16 +237,73 @@ print weather[1]
 
 drawMap(weather)
 goal = findGoal(weather)
+print goal
+goalI=goal[0]
+goalJ=goal[1]
 
-
-print "Len map", len(map)
-print "Len map[row = 0]", len(map[1])
+print weather
+print "Len map", len(weather)
+print "Len map[row = 0]", len(weather[1])
 #location = findAirPlane(map)
+startLoc=findAirPlane(weather)
+print startLoc
+
+counter=0
+currentLoc=startLoc
+#caliculate Up,Down,RIght,Left
+cI=startLoc[0]
+cJ=startLoc[1]
+print "START", cI,cJ
+
+
+(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+(cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
+counter=counter+1
+print "MAP ",counter, weather
+
+
+(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+(cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
+counter=counter+1
+print "MAP ",counter, weather
+
+(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+(cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
+counter=counter+1
+print "MAP ",counter, weather
+
+(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+(cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
+counter=counter+1
+print "MAP ",counter, weather
+
+(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+(cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
+counter=counter+1
+print "MAP ",counter, weather
+
+while fuel >= 0 and isGoal(currentLoc) != True:
+    (nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+    (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
+    counter=counter+1
+    print "MAP ",counter, drawMap(weather)
+
+    if fuel < 0:
+
+
+
+
+
+
+
+
 
 ''''
+print startLoc
 str = "2"
 print str.isdigit()
 str1 = 'A'
 print str1.isdigit()
+c(n) = distance between starting point and
 '''
 print "end"
