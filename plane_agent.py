@@ -152,10 +152,10 @@ def getNext(mapm,dist,cI,cJ,gI,gJ, sI, sJ):
     fuelDownD = mapm[downI][downJ]
     fuelRightD = mapm[rightI][rightJ]
     fuelLeftD = mapm[leftI][leftJ]
-    upD += fuelUpD
-    downD += fuelDownD
-    rightD += fuelRightD
-    leftD += fuelLeftD
+    upD += int(fuelUpD)
+    downD += int(fuelDownD)
+    rightD += int(fuelRightD)
+    leftD += int(fuelLeftD)
 
 
 
@@ -270,34 +270,34 @@ sJ = startLoc[1]
 print "START", cI,cJ
 
 
-(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ, sI, sJ)
+(nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
 (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
 counter=counter+1
 print "MAP ",counter, weather
 
 
-(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ,sI,sJ)
+(nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
 (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
 counter=counter+1
 print "MAP ",counter, weather
 
-(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ, sI,sJ)
+(nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
 (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
 counter=counter+1
 print "MAP ",counter, weather
 
-(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ,sI,sJ)
+(nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
 (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
 counter=counter+1
 print "MAP ",counter, weather
 
-(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ,sI,sJ)
+(nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
 (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
 counter=counter+1
 print "MAP ",counter, weather
 
 while fuel >= 0 and isGoal(currentLoc) != True:
-    (nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ,sI,sJ)
+    (nextI,nextJ,fuelneeded)=getNext(weather,manhattan, cI,cJ,goalI,goalJ, sI, sJ)
     (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
     counter=counter+1
     print "MAP ",counter, drawMap(weather)
