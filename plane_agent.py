@@ -65,8 +65,8 @@ def manhattan(i1,j1,i2,j2):
 def fuelDistance():
     pass
 
-def getUsedDistance(fuel):
-    pass
+
+
 def findAirPlane(mapm):
     """
     Find a starting point and return its location
@@ -129,7 +129,7 @@ def findGoal(mapm):
 
 
 
-def getNext(dist,cI,cJ,gI,gJ):
+def getNext(mapm,dist,cI,cJ,gI,gJ, sI, sJ):
 
     minv=10000
     upI=cI-1
@@ -140,12 +140,23 @@ def getNext(dist,cI,cJ,gI,gJ):
     rightJ=cJ+1
     leftI=cI
     leftJ=cJ-1
-    dist=manhattan#later changed
-    # measure distance between goal
-    upD=dist(upI,upJ,goalI,goalJ) + dist()
-    downD=dist(downI,downJ,goalI,goalJ)+dist(upI)
-    rightD=dist(rightI,rightJ,goalI,goalJ)
-    leftD=dist(leftI,leftJ,goalI,goalJ)
+
+    # measure h(n) = distance between next location and goal, plus c(n) = distance between starting point and goal.
+    #Form here, start A*search such that A*search = h(n) + c(n)
+    upD=dist(upI,upJ,goalI,goalJ) + dist(sI, sJ, gI, gJ)
+    downD=dist(downI,downJ,goalI,goalJ) + dist(sI, sJ, gI, gJ)
+    rightD=dist(rightI,rightJ,goalI,goalJ) + dist(sI, sJ, gI, gJ)
+    leftD=dist(leftI,leftJ,goalI,goalJ) + dist(sI, sJ, gI, gJ)
+
+    fuelUpD = mapm[upI][upJ]
+    fuelDownD = mapm[downI][downJ]
+    fuelRightD = mapm[rightI][rightJ]
+    fuelLeftD = mapm[leftI][leftJ]
+    upD += fuelUpD
+    downD += fuelDownD
+    rightD += fuelRightD
+    leftD += fuelLeftD
+
 
 
     if (upD < minv):
@@ -167,8 +178,6 @@ def getNext(dist,cI,cJ,gI,gJ):
         nextJ=leftJ
     print "NEXT", nextI,nextJ
     return (nextI,nextJ,minv)
-
-
 
 def changemap(mapm,ci,cj,ni,nj):
     if (mapm[ni][nj]=='1'):
@@ -223,7 +232,7 @@ def moveLoc(mapm,cI,cJ,nextI,nextJ):
 def isGoal(location):
     if location == 'P':
         return True
-    else
+    else:
         return False
 
 
@@ -253,42 +262,47 @@ currentLoc=startLoc
 #caliculate Up,Down,RIght,Left
 cI=startLoc[0]
 cJ=startLoc[1]
+
+global sI
+sI =startLoc[0]
+global sJ
+sJ = startLoc[1]
 print "START", cI,cJ
 
 
-(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ, sI, sJ)
 (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
 counter=counter+1
 print "MAP ",counter, weather
 
 
-(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ,sI,sJ)
 (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
 counter=counter+1
 print "MAP ",counter, weather
 
-(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ, sI,sJ)
 (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
 counter=counter+1
 print "MAP ",counter, weather
 
-(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ,sI,sJ)
 (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
 counter=counter+1
 print "MAP ",counter, weather
 
-(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+(nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ,sI,sJ)
 (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
 counter=counter+1
 print "MAP ",counter, weather
 
 while fuel >= 0 and isGoal(currentLoc) != True:
-    (nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ)
+    (nextI,nextJ,fuelneeded)=getNext(manhattan, cI,cJ,goalI,goalJ,sI,sJ)
     (cI,cJ)=moveLoc(weather,cI,cJ,nextI,nextJ)
     counter=counter+1
     print "MAP ",counter, drawMap(weather)
 
-    if fuel < 0:
+
 
 
 
