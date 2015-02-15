@@ -127,6 +127,27 @@ def findGoal(mapm):
                 return goalLoc
 
 def made_up(mapm,i1,j1,i2,j2):
+    #there is another airplane on the map,
+    ##  then return huge number to avoid an error.
+    if mapm[i1][j1] == "A":
+        return 100000
+    if mapm[i1][j1] == "B":
+        return 100000
+    if mapm[i1][j1] == "C":
+        return 100000
+    if mapm[i1][j1] == "D":
+        return 100000
+    if mapm[i1][j1] == "E":
+        return 100000
+    if mapm[i1][j1] == "F":
+        return 100000
+    if mapm[i1][j1] == "G":
+        return 100000
+    if mapm[i1][j1] == "H":
+        return 100000
+    if mapm[i1][j1] == "I":
+        return 100000
+
     if mapm[i1][j1] == 'P':
         return euclidean(mapm,i1,j1,i2,j2) + 0
     else:
